@@ -15,9 +15,12 @@ const Hero = () => {
       </nav>
 
       <h1 className="head_text">
-        Summarise websites with <br />
+        Summarise websites with <br className="max-md:hidden" />
         <span className="pink_gradient">OpenAI GPT-4</span>
       </h1>
+      <h2 className="desc">
+        Transform lengthy articles into concise summaries.
+      </h2>
     </header>
   );
 };
