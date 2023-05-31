@@ -12,7 +12,6 @@ const Demo = () => {
   };
 
   const handleInputChange = (e) => {
-    console.log(e.target.value);
     setArticle({ ...article, url: e.target.value });
   };
 
