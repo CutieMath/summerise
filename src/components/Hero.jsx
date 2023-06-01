@@ -4,13 +4,13 @@ const Hero = () => {
   return (
     <header className="w-full flex justify-center items-center flex-col">
       <nav className="flex justify-between items-center w-full mb-10 pt-3">
-        <img src={logo} alt="sums_logo" className="w-20 object-contain" />
+        <img src={logo} alt="sums_logo" className="w-16 object-contain" />
         <button
           type="button"
           onClick={() => window.open("https://github.com/CutieMath/summerise")}
           className="black_btn"
         >
-          GitHub Repo
+          GitHub
         </button>
       </nav>
 
