@@ -27,12 +27,12 @@ const Demo = () => {
     if (data?.summary) {
       const newArticle = { ...article, summary: data.summary };
       const updatedAllArticles = [newArticle, ...allArticles];
+      // Update state and local storage
       setArticle(newArticle);
       setAllArticles(updatedAllArticles);
-
-      // Update the articles in local storage
       localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
       console.log(newArticle);
+      console.log("article array: ", updatedAllArticles);
     }
   };
 
@@ -73,7 +73,7 @@ const Demo = () => {
 
         {/* url history  */}
         <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
-          {allArticles.map((item, index) => {
+          {allArticles.map((item, index) => (
             <div
               key={`link-${index}`}
               onClick={() => setArticle(item)}
@@ -89,12 +89,12 @@ const Demo = () => {
               <p className="flex-1 font-satoshi text-blue-700 font-medium text-sm truncate">
                 {item.url}
               </p>
-            </div>;
-          })}
+            </div>
+          ))}
         </div>
-
-        {/* results display  */}
       </div>
+
+      {/* results display  */}
     </section>
   );
 };
