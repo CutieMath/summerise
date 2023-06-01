@@ -84,7 +84,7 @@ const Demo = () => {
           <FiLink2 className="absolute left-0 my-2 ml-3 text-xl" />
           <input
             type="url"
-            placeholder="Paste the article link"
+            placeholder="Paste a website link"
             value={article.url}
             onChange={handleUserInputChange}
             onKeyDown={handleKeyDown}
