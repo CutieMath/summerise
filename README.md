@@ -9,7 +9,7 @@ API used: [Article Extractor and Summarizer](https://rapidapi.com/restyler/api/a
 
 ## Deployement
 
-Deployed at: [Sums](https://deft-kashata-7fb492.netlify.app/)
+Deployed at: [My Sums Website](https://deft-kashata-7fb492.netlify.app/)
 
 ## Run
 
