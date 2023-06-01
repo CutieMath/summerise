@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { copy, linkIcon, loader, tick, submitArrow } from "../assets";
+import { copy, linkIcon, tick, submitArrow } from "../assets";
+import Loader from "./Loader";
 import { useLazyGetSummaryQuery } from "../services/article";
 
 const Demo = () => {
@@ -95,6 +96,20 @@ const Demo = () => {
       </div>
 
       {/* results display  */}
+      <div className="my-10 max-w-full flex justify-center items-center">
+        {isFetching ? (
+          <Loader />
+        ) : error ? (
+          <p className="font-inter font-bold text-black text-center">
+            Oops, something went wrong. API needs improvement. <br />
+            <span className="font-satoshi font-normal text-gray-700">
+              {error?.data?.error}
+            </span>
+          </p>
+        ) : (
+          article.summary && <div></div>
+        )}
+      </div>
     </section>
   );
 };
