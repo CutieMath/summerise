@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { copy, linkIcon, tick, submitArrow } from "../assets";
+import { submitArrow } from "../assets";
 import Loader from "./Loader";
 import { useLazyGetSummaryQuery } from "../services/article";
+import { FiCopy, FiLink2, FiCheck } from "react-icons/fi";
 
 const Demo = () => {
   const [article, setArticle] = useState({
@@ -69,11 +70,7 @@ const Demo = () => {
           className="relative flex justify-center items-center"
           onSubmit={handleSubmit}
         >
-          <img
-            src={linkIcon}
-            alt="link-icon"
-            className="absolute left-0 my-2 ml-3 w-5"
-          />
+          <FiLink2 className="absolute left-0 my-2 ml-3 text-xl" />
           <input
             type="url"
             placeholder="Paste the article link"
@@ -100,11 +97,11 @@ const Demo = () => {
               className="link_card"
             >
               <div className="copy_btn" onClick={() => handleCopy(item.url)}>
-                <img
-                  src={copied === item.url ? tick : copy}
-                  alt={copied === item.url ? "tick_icon" : "copy_icon"}
-                  className="w-[40%] h-[40%] object-contain"
-                />
+                {copied === item.url ? (
+                  <FiCheck className="text-sm" />
+                ) : (
+                  <FiCopy className="text-sm" />
+                )}
               </div>
               <p className="flex-1 font-satoshi text-blue-700 font-medium text-sm truncate">
                 {item.url}
