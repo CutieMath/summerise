@@ -8,9 +8,8 @@ const Demo = () => {
     url: "",
     summary: "",
   });
-
-  const [copied, setCopied] = useState(false);
   const [allArticles, setAllArticles] = useState([]);
+  const [copied, setCopied] = useState(false);
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
 
   useEffect(() => {
@@ -25,63 +24,76 @@ const Demo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // check if the article is already in the state
+    const existingArticle = allArticles.find(
+      (item) => item.url === article.url
+    );
+    if (existingArticle) return setArticle(existingArticle);
+
+    // fetch new summary
     const { data } = await getSummary({ articleUrl: article.url });
     if (data?.summary) {
       const newArticle = { ...article, summary: data.summary };
       const updatedAllArticles = [newArticle, ...allArticles];
-      // Update state and local storage
+      // update state and local storage
       setArticle(newArticle);
       setAllArticles(updatedAllArticles);
       localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
-      console.log(newArticle);
-      console.log("article array: ", updatedAllArticles);
+      console.log("New Article", article);
+      console.log("All Articles", allArticles);
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleUserInputChange = (e) => {
     setArticle({ ...article, url: e.target.value });
   };
 
+  // copy the url and toggle the icon for user feedback
   const handleCopy = (copyUrl) => {
     setCopied(copyUrl);
     navigator.clipboard.writeText(copyUrl);
     setTimeout(() => setCopied(false), 3000);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      handleSubmit(e);
+    }
+  };
+
   return (
     <section className="mt-16 w-full max-w-xl">
+      {/* Search */}
       <div className="flex flex-col w-full gap-2">
-        {/* input form  */}
         <form
           className="relative flex justify-center items-center"
           onSubmit={handleSubmit}
         >
           <img
             src={linkIcon}
-            alt="link_icon"
+            alt="link-icon"
             className="absolute left-0 my-2 ml-3 w-5"
           />
           <input
             type="url"
-            placeholder="Enter a URL"
+            placeholder="Paste the article link"
             value={article.url}
-            onChange={(e) => handleInputChange(e)}
+            onChange={handleUserInputChange}
+            onKeyDown={handleKeyDown}
             required
             className="url_input peer"
           />
           <button
             type="submit"
-            className="submit_btn
-            peer-focus:border-gray-700 peer-focus:text-gray-700
-          "
+            className="submit_btn peer-focus:border-gray-700 peer-focus:text-gray-700 "
           >
-            <img src={submitArrow} alt="send_icon" className="w-4" />
+            <img src={submitArrow} alt="submit-icon" className="w-3" />
           </button>
         </form>
 
-        {/* url history  */}
+        {/* Browse History */}
         <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
-          {allArticles.map((item, index) => (
+          {allArticles.reverse().map((item, index) => (
             <div
               key={`link-${index}`}
               onClick={() => setArticle(item)}
@@ -90,7 +102,7 @@ const Demo = () => {
               <div className="copy_btn" onClick={() => handleCopy(item.url)}>
                 <img
                   src={copied === item.url ? tick : copy}
-                  alt="copy_icon"
+                  alt={copied === item.url ? "tick_icon" : "copy_icon"}
                   className="w-[40%] h-[40%] object-contain"
                 />
               </div>
@@ -102,13 +114,14 @@ const Demo = () => {
         </div>
       </div>
 
-      {/* results display  */}
+      {/* Display Result */}
       <div className="my-10 max-w-full flex justify-center items-center">
         {isFetching ? (
           <Loader />
         ) : error ? (
           <p className="font-inter font-bold text-black text-center">
-            Oops, something went wrong. API needs improvement. <br />
+            Oops, something went wrong. API needs improvement.
+            <br />
             <span className="font-satoshi font-normal text-gray-700">
               {error?.data?.error}
             </span>
