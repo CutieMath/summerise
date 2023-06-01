@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { submitArrow } from "../assets";
 import Loader from "./Loader";
 import { useLazyGetSummaryQuery } from "../services/article";
-import { FiCopy, FiLink2, FiCheck } from "react-icons/fi";
+import { FiCopy, FiLink2, FiCheck, FiX } from "react-icons/fi";
 
 const Demo = () => {
   const [article, setArticle] = useState({
@@ -62,6 +62,17 @@ const Demo = () => {
     }
   };
 
+  const handleDeleteItem = (item) => {
+    if (confirm("Are you sure you want to delete this link?")) {
+      const updatedAllArticles = allArticles.filter(
+        (article) => article.url !== item.url
+      );
+      console.log("updatedAllArticles after delete", updatedAllArticles);
+      setAllArticles(updatedAllArticles);
+      localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
+    }
+  };
+
   return (
     <section className="mt-16 w-full max-w-xl">
       {/* Search */}
@@ -91,11 +102,7 @@ const Demo = () => {
         {/* Browse History */}
         <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
           {allArticles.reverse().map((item, index) => (
-            <div
-              key={`link-${index}`}
-              onClick={() => setArticle(item)}
-              className="link_card"
-            >
+            <div key={`link-${index}`} className="link_card">
               <div className="copy_btn" onClick={() => handleCopy(item.url)}>
                 {copied === item.url ? (
                   <FiCheck className="text-sm" />
@@ -103,9 +110,16 @@ const Demo = () => {
                   <FiCopy className="text-sm" />
                 )}
               </div>
-              <p className="flex-1 font-satoshi text-blue-700 font-medium text-sm truncate">
+              <p
+                onClick={() => setArticle(item)}
+                className="cursor-pointer flex-1 font-satoshi text-blue-700 font-medium text-sm truncate"
+              >
                 {item.url}
               </p>
+              <FiX
+                className="cursor-pointer"
+                onClick={() => handleDeleteItem(item)}
+              />
             </div>
           ))}
         </div>
